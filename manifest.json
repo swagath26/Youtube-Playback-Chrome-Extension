@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "My YouTube Playback Customizer",
+    "version": "1.0",
+    "description": "Customizes YouTube video playback speed at specific points",
+    "permissions": ["storage", "activeTab"],
+    "content_scripts": [
+      {
+        "matches": ["https://*.youtube.com/*"],
+        "js": ["content.js"],
+        "css": ["content.css"]
+      }
+    ],
+    "action": {
+      "default_popup": "popup.html"
+    }
+  }

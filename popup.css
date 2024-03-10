@@ -1,0 +1,30 @@
+.container-popup {
+    width: 300px;
+}
+
+#custom-playback-section {
+    display: none;
+}
+
+.nav-link-popup {
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: text-decoration 0.5s ease-in-out;
+}
+
+.nav-link-text {
+    padding: 0 10px;
+    font-size: large;
+    color: #2d1111;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.nav-link-popup.active {
+    border-bottom: 2px solid;
+}
+
+.navbar-popup {
+    display: flex;
+    justify-content: left;
+}

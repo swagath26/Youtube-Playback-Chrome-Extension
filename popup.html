@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YT PB</title>
+  <link rel="stylesheet" href="popup.css"/>
+</head>
+<body>
+
+<div class="container-popup">
+  <nav class="navbar-popup">
+    <div id="time-stamps-link" class="nav-link-popup active">
+      <a class="nav-link-text">Time Stamps</a>
+    </div>
+    <div id="custom-playback-link" class="nav-link-popup">
+      <a class="nav-link-text">Clips</a>
+    </div>
+  </nav>
+
+  <div id="custom-playback-section" class="section">
+    <h2>Saved Clips</h2>
+    <button id="play-all">Play All</button>
+    <button id="play-single">Play Single</button>
+    <div id="portions-list" class="card-container">
+    </div>
+  </div>
+
+  <div id="time-stamps-section" class="section">
+    <h2>Saved Time Stamps</h2>
+    <div id="time-stamps-list" class="card-container">
+    </div>
+  </div>
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
