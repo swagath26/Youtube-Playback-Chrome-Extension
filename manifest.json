@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "My YouTube Playback Customizer",
+    "name": "YouTube Playback Tools",
     "version": "1.0",
-    "description": "Customizes YouTube video playback speed at specific points",
+    "description": "Additional YouTube video playback tools",
     "permissions": ["storage", "activeTab"],
     "content_scripts": [
       {
