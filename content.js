@@ -1,5 +1,5 @@
 const tools_div = document.createElement('div');
-tools_div.classList.add("button-container");
+tools_div.classList.add("button-container-cus");
 
 const tools_button = document.createElement('button');
 tools_button.id = "play-button";
