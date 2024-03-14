@@ -23,26 +23,26 @@
   }
   
   .settings {
-    width: 300px;
+    width: 200px;
     display: none;
     position: absolute;
     bottom: 60px;
     transform: translateX(-100px);
     color: white;
-    background-color: rgba(30, 30, 30); /* White background color */
+    background-color: rgba(30, 30, 30);
     padding: 10px;
-    border: 'none';
-    border-radius: 20px;
+    border: none;
+    border-radius: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
   .timestamp-section {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
+    margin: 5px;
   }
 
-  .portion-row {
+  .clip-row {
     display: flex;
     align-items: center;
     height: 50px;
@@ -50,28 +50,35 @@
 
   .time-label-column {
     display: flex;
-    justify-content: left;
-    width: 40px;
+    justify-content: center;
+    width: 30%;
   }
 
   .time-column {
     display: flex;
-    justify-content: space-evenly;
-    width: 120px;
-  }
-
-  .speed-column {
-    display: flex;
-    justify-content: right;
-    width: 50px;
+    justify-content: center;
+    width: 70%;
   }
 
   .save-row {
     display: flex;
     justify-content: left;
-    margin-top: 10px;
+    margin: 5px;
   }
 
   #save-button {
-    margin-left: 30px;
+    margin-left: 20px;
+  }
+
+  .ypce-button {
+    border: 1px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    padding: 1.2rem;
+  }
+
+  .ypce-button:hover {
+    background-color: #535353;
   }

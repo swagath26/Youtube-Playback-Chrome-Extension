@@ -23,6 +23,10 @@ let timeStamps = [];
 let clips = [];
 let playBackAll = false;
 
+function secondsToTimeFormat(seconds) {
+    return `${parseInt(seconds/3600)} : ${parseInt((seconds%3600)/60)} : ${parseInt(seconds%60)} : ${parseInt((seconds - parseInt(seconds))*100)}`;
+}
+
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const currentTab = tabs[0];
     const videoURL = currentTab.url;
@@ -46,9 +50,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             timeStampCard.id = `stamp${index}`;
             timeStampCard.style.height = '60px';
             timeStampCard.style.width = '100%';
-            timeStampCard.innerHTML = `
-                <h1>${Math.floor(element/3600)}:${Math.floor((element%3600)/60)}:${element%60}</h1>
-            `
+            timeStampCard.innerHTML = `<b>${secondsToTimeFormat(element)}</b>`;
             const timeStampsList = document.getElementById('time-stamps-list');
             timeStampsList.append(timeStampCard);
 
@@ -94,7 +96,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 chrome.storage.local.set({ 'my_yt_pb' : my_yt_data });
                 isplaying = null;
                 stopButton.remove();
-                chrome.tabs.sendMessage(tabs[0].id, { action: 'playbackAll', clips: clips });
+                chrome.tabs.sendMessage(tabs[0].id, { action: 'playbackAll', clips: clips, loopVideo: true });
         })
 
         playSingle.addEventListener('click', () => {
@@ -107,8 +109,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             clipCard.style.height = '120px';
             clipCard.style.width = '100%';
             clipCard.innerHTML = `
-                <h3>${Math.floor((element.start)/3600)}:${Math.floor(((element.start)%3600)/60)}:${(element.start)%60}</h3>
-                <h3>${Math.floor((element.end)/3600)}:${Math.floor(((element.end)%3600)/60)}:${(element.end)%60}</h3>
+                <b>${secondsToTimeFormat(element.start)} to ${secondsToTimeFormat(element.end)}</b>
             `
             const clipsList = document.getElementById('portions-list');
             clipsList.append(clipCard);
@@ -137,23 +138,23 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             const clipDeleteButton = document.createElement('button');
             clipDeleteButton.id = `clip_delete_${index}`;
             clipDeleteButton.innerHTML = 'Delete';
-            clipButton.className = 'delete_clips';
+            clipDeleteButton.className = 'delete_clips';
             clipCard.append(clipDeleteButton);
             clipDeleteButton.addEventListener('click', () => {
+                chrome.tabs.sendMessage(tabs[0].id, { action: 'stopPlaybackAll'});
                 if (isplaying === clipCard.id) {
                     chrome.tabs.sendMessage(tabs[0].id, { action: 'stopPlaybackLoop'});
-                    chrome.tabs.sendMessage(tabs[0].id, { action: 'stopPlaybackAll'});
                     my_yt_data['isplaying'] = null;
                     chrome.storage.local.set({ 'my_yt_pb' : my_yt_data });
                     isplaying = null;
                 }
 
-                let delete_buttons = document.getElementsByClassName('delete_clip');
+                let clip_delete_buttons = document.getElementsByClassName('delete_clips');
                 let len = videoSettings.clips.length;
-                let ind = parseInt(clipDeleteButton.id.split('_')[1]);
+                let ind = parseInt(clipDeleteButton.id.split('_')[2]);
                 for (let i=ind; i<len; i++) {
                     videoSettings.clips[i] = i!=len-1 ? videoSettings.clips[i+1] : null;
-                    delete_buttons[i].id = i==ind ? `clip_delete_` : `clip_delete_${i-1}`;
+                    clip_delete_buttons[i].id = i==ind ? `clip_delete_` : `clip_delete_${i-1}`;
                 }
                 videoSettings.clips.pop();
                 my_yt_data[videoId] = videoSettings;
