@@ -1,5 +1,12 @@
+body {
+    background-color: rgba(30, 30, 30);
+    margin: 0;
+}
 .container-popup {
-    width: 300px;
+    margin: 0;
+    width: 320px;
+    min-height: 93px;
+    max-height: 50%;
 }
 
 #custom-playback-section {
@@ -7,16 +14,16 @@
 }
 
 .nav-link-popup {
-    padding: 5px 10px;
+    padding: 10px 15px;
     cursor: pointer;
     transition: text-decoration 0.5s ease-in-out;
 }
 
 .nav-link-text {
     padding: 0 10px;
-    font-size: large;
-    color: #2d1111;
-    font-weight: 500;
+    font-size: 15px;
+    color: white;
+    font-weight: 400;
     text-decoration: none;
 }
 
@@ -25,6 +32,128 @@
 }
 
 .navbar-popup {
+    padding-left: 20px;
     display: flex;
     justify-content: left;
+    color: white;
+    height: 40px;
+    background-color: rgba(40, 40, 40);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
+#clips-header-empty {
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+#time-stamps-header-empty {
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+#clips-header-nonempty {
+    margin: 0 40px 20px;
+    display: none;
+}
+
+.card-container {
+    padding: 15px;
+}
+
+#time-stamps-list {
+    display: none;
+}
+#clips-list {
+    display: none;
+}
+
+.time-stamp-card {
+    display: flex;
+    align-items: end;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(40, 40, 40, 0.3);
+    color: white;
+}
+
+.clip-card {
+    display: flex;
+    align-items: end;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(40, 40, 40, 0.3);
+    color: white;
+}
+
+.time-stamp-text {
+    width: 70%;
+    margin-bottom: 5px;
+}
+
+.clip-text {
+    width: 80%;
+}
+
+.time-stamp-title {
+    margin-top: 0;
+}
+
+.clip-title{
+    margin-top: 0;
+}
+
+.time-stamp-play-button {
+    margin: 0 5%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.clip-play-button{
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.delete_stamp {
+    margin: 0 5%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.delete_clips {
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.ypce-button {
+    border: 1px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem 1.5rem;
+  }
+
+  .clip-off-button {
+    border: 1px solid;
+    border-color: white;
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem 0.5rem;
+    margin-left: 3px;
+  }
+
+  .clip-off-button:hover {
+    background-color: #535353;
+  }
+
+  .ypce-button:hover {
+    background-color: #535353;
+  }

@@ -196,7 +196,7 @@ window.addEventListener('load', () => {
     clearInterval(interval_fun2);
     chrome.storage.local.get('my_yt_pb', (data) => {
         let my_yt_data = data['my_yt_pb'] || {};
-        my_yt_data['isplaying'] = null;
+        my_yt_data[videoId]['isplaying'] = null;
         chrome.storage.local.set({ 'my_yt_pb' : my_yt_data });
     })
 })

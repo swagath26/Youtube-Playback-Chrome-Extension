@@ -9,9 +9,10 @@
 <body>
 
 <div class="container-popup">
+
   <nav class="navbar-popup">
     <div id="time-stamps-link" class="nav-link-popup active">
-      <a class="nav-link-text">Time Stamps</a>
+      <a class="nav-link-text">Bookmarks</a>
     </div>
     <div id="custom-playback-link" class="nav-link-popup">
       <a class="nav-link-text">Clips</a>
@@ -19,15 +20,21 @@
   </nav>
 
   <div id="custom-playback-section" class="section">
-    <h2>Saved Clips</h2>
-    <button id="play-all">Play All</button>
-    <button id="play-single">Play Single</button>
-    <div id="portions-list" class="card-container">
+    <div id="clips-header-empty">
+      <h3>No Saved Clips</h3>
+    </div>
+    <div id="clips-list" class="card-container">
+    </div>
+    <div id="clips-header-nonempty">
+      <button id="play-all" class="ypce-button">Play All</button>
+      <button id="play-single" class="ypce-button">Play Single</button>
     </div>
   </div>
 
   <div id="time-stamps-section" class="section">
-    <h2>Saved Time Stamps</h2>
+    <div id="time-stamps-header-empty">
+      <h3>No Saved Bookmarks</h3>
+    </div>
     <div id="time-stamps-list" class="card-container">
     </div>
   </div>
