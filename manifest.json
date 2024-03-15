@@ -1,8 +1,13 @@
 {
     "manifest_version": 3,
-    "name": "YouTube Playback Tools",
+    "name": "YT Playback Studio Lite",
     "version": "1.0",
-    "description": "Additional YouTube video playback tools",
+    "icons": {
+      "16": "logo16.png",
+      "48": "logo48.png",
+      "128": "logo128.png"
+    },
+    "description": "Additional YouTube Video Playback Tools",
     "permissions": ["storage", "activeTab"],
     "content_scripts": [
       {
