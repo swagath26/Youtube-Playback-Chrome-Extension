@@ -54,8 +54,9 @@ body {
 }
 
 #clips-header-nonempty {
-    margin: 0 40px 20px;
+    margin: 0 0 20px;
     display: none;
+    justify-content: space-evenly;
 }
 
 .card-container {
@@ -100,6 +101,10 @@ body {
 
 .clip-title{
     margin-top: 0;
+}
+
+.clip-info{
+    font-weight: 475;
 }
 
 .time-stamp-play-button {

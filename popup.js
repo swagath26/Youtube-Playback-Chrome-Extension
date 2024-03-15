@@ -23,8 +23,25 @@ let timeStamps = [];
 let clips = [];
 let playBackAll = false;
 
-function secondsToTimeFormat(seconds) {
-    return `${parseInt(seconds/3600)} : ${parseInt((seconds%3600)/60)} : ${parseInt(seconds%60)} : ${parseInt((seconds - parseInt(seconds))*100)}`;
+function secondsToTimeFormat(seconds, mode) {
+    let formattedText = '';
+    let hours = parseInt(seconds/3600);
+    let min = parseInt((seconds%3600)/60);
+    let sec = parseInt(seconds%60);
+    let millisec =  parseInt((seconds - parseInt(seconds))*100);
+
+    if (mode == 'display') formattedText = formattedText.concat( 
+        hours == 0 ? '' : `${hours}:${min < 10 ? '0' : ''}`,
+        min,
+        sec < 10 ? ':0' : ':', sec,
+        millisec < 10 ? ' : 0' : ' : ', millisec )
+    else if (mode == 'duration') formattedText = formattedText.concat(
+        hours == 0 ? '' : `${hours}h ${min == 0 ? '0m ' : ''}`,
+        min == 0 ? '' : `${min}m `,
+        sec, 's ',
+        millisec, 'ms' )
+
+    return formattedText;
 }
 
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -32,16 +49,19 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const videoURL = currentTab.url;
     videoId = extractVideoIdFromUrl(videoURL);
 
-    var isplaying;
+    var isplaying = null;
 
     chrome.storage.local.get('my_yt_pb', (data) => {
         let my_yt_data = data['my_yt_pb'] || {};
-        isplaying = my_yt_data[videoId]['isplaying'] || null;
+        let videoSettings = my_yt_data[videoId] || {};
+        isplaying = videoSettings['isplaying'] || null;
     })
 
     chrome.storage.local.get('my_yt_pb', (data) => {
         let my_yt_data = data['my_yt_pb'] || {};
         let videoSettings = my_yt_data[videoId] || {};
+        isplaying = videoSettings['isplaying'] || null;
+        console.log(isplaying);
         timeStamps = videoSettings.time_stamps || [];
         clips = videoSettings.clips || [];
 
@@ -53,8 +73,8 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             timeStampCard.className = 'time-stamp-card';
             timeStampCard.innerHTML = `
                 <div class="time-stamp-text">
-                    <h2 class="time-stamp-title"> Bookmark ${index} </h2>
-                    <b class="time-stamp-info">${secondsToTimeFormat(element)}</b>
+                    <h2 class="time-stamp-title"> Bookmark ${index+1} </h2>
+                    <b class="time-stamp-info">${secondsToTimeFormat(element, 'display')}</b>
                 </div>
             `;
             const timeStampsList = document.getElementById('time-stamps-list');
@@ -104,12 +124,12 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const playSingle = document.getElementById('play-single');
 
         playAll.addEventListener('click', () => {
-                chrome.tabs.sendMessage(tabs[0].id, { action: 'stopPlaybackLoop'});
-                my_yt_data[videoId]['isplaying'] = null;
-                chrome.storage.local.set({ 'my_yt_pb' : my_yt_data });
-                isplaying = null;
-                stopButton.remove();
-                chrome.tabs.sendMessage(tabs[0].id, { action: 'playbackAll', clips: clips, loopVideo: true });
+            chrome.tabs.sendMessage(tabs[0].id, { action: 'stopPlaybackLoop'});
+            my_yt_data[videoId]['isplaying'] = null;
+            chrome.storage.local.set({ 'my_yt_pb' : my_yt_data });
+            isplaying = null;
+            stopButton.remove();
+            chrome.tabs.sendMessage(tabs[0].id, { action: 'playbackAll', clips: clips, loopVideo: true });
         })
 
         playSingle.addEventListener('click', () => {
@@ -121,13 +141,13 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             document.getElementById('clips-header-nonempty').style.display = 'flex';
             document.getElementById('clips-list').style.display = 'block';
             const clipCard = document.createElement('div');
-            clipCard.id = `clip${index}`;
+            clipCard.id = `clip-${index}`;
             clipCard.className = 'clip-card';
             clipCard.innerHTML = `
                 <div class="clip-text">
-                    <h2 class="clip-title"> Clip ${index} </h2> 
-                    <p class="clip-info">${secondsToTimeFormat(element.start)} --- ${secondsToTimeFormat(element.end)}</p>
-                    <b>(${parseInt(element.end - element.start)} seconds)</b>
+                    <h2 class="clip-title"> Segment ${index+1} </h2> 
+                    <p class="clip-info">${secondsToTimeFormat(element.start, 'display')} ----- ${secondsToTimeFormat(element.end, 'display')}</p>
+                    <b>( ${secondsToTimeFormat(element.end - element.start, 'duration')} )</b>
                 </div>
             `
             const clipsList = document.getElementById('clips-list');
@@ -136,7 +156,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             const clipButton = document.createElement('button');
             clipButton.id = `clip_button${index}`;
             clipButton.className = 'clip-play-button';
-            clipButton.innerHTML = `<svg width="20px" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"/></svg>`;
+            clipButton.innerHTML = `<svg width="20px" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"/></svg>`;
 
             clipCard.append(clipButton);
             clipButton.addEventListener('click', () => {
@@ -168,6 +188,10 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                     chrome.storage.local.set({ 'my_yt_pb' : my_yt_data });
                     isplaying = null;
                 }
+                else if (isplaying > clipCard.id) {
+                    my_yt_data[videoId]['isplaying'] = isplaying = `clip-${parseInt(isplaying.split('-')[1])-1}`;
+                    chrome.storage.local.set({ 'my_yt_pb' : my_yt_data });
+                }
 
                 let clip_delete_buttons = document.getElementsByClassName('delete_clips');
                 let len = videoSettings.clips.length;
@@ -178,6 +202,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 }
                 videoSettings.clips.pop();
                 my_yt_data[videoId] = videoSettings;
+
                 chrome.storage.local.set({ 'my_yt_pb' : my_yt_data }, () => {
                     clipCard.parentNode.removeChild(clipCard);
                     if(!(videoSettings.clips.length)) {

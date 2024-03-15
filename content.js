@@ -86,10 +86,6 @@ tools_button.addEventListener('click', () => {
 
 const videoId = new URL(document.location.href).searchParams.get('v');
 
-
-function secondsToTimeFormat(seconds) {
-    return `${parseInt(seconds/3600)} : ${parseInt((seconds%3600)/60)} : ${parseInt(seconds%60)} : ${parseInt((seconds - parseInt(seconds))*100)}`;
-}
 var start_time, end_time;
 
 window.addEventListener('load', function() {
@@ -142,6 +138,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         clearInterval(interval_fun2);
         player.currentTime = message.clip.start;
         video.playbackRate = message.clip.speed;
+        player.play();
         function loopClip() {
             if (player.currentTime >= message.clip.end || player.currentTime < message.clip.start) {
                 player.currentTime = message.clip.start;
@@ -160,6 +157,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         let i=0;
         player.currentTime = message.clips[i].start;
         video.playbackRate = message.clips[i].speed;
+        player.play();
         function loopClip2() {
             if (player.currentTime >= message.clips[i].end) {
                 if(i == message.clips.length - 1) {
@@ -221,4 +219,20 @@ function addClip(start, end, speed) {
         my_yt_data[videoId] = videoSettings;
         chrome.storage.local.set({ 'my_yt_pb' : my_yt_data });
     })
+}
+
+function secondsToTimeFormat(seconds, mode) {
+    let formattedText = '';
+    let hours = parseInt(seconds/3600);
+    let min = parseInt((seconds%3600)/60);
+    let sec = parseInt(seconds%60);
+    let millisec =  parseInt((seconds - parseInt(seconds))*100);
+
+    formattedText = formattedText.concat( 
+        hours < 10 ? '0' : ' : ', hours,
+        min < 10 ? ' : 0' : ' : ', min,
+        sec < 10 ? ' : 0' : ' : ', sec,
+        millisec < 10 ? ' : 0' : ' : ', millisec )
+
+    return formattedText;
 }
